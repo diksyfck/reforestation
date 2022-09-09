@@ -1,0 +1,32 @@
+name: Reforestation
+
+on:
+  workflow_dispatch:
+  push:
+  schedule:
+  - cron: 0 */5 * * *
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v3
+      - uses: actions/checkout@v3
+        with:
+         persist-credentials: false
+         fetch-depth: 0
+         
+      - name: Setup
+        run: |
+          git config --local user.email "dikiawan9@gmail.com"
+          git config --local user.name "Diki Rizkiawan"
+          
+      - name: Running python script
+        run: python greeni.py
+        
+      - name: Push
+        uses: ad-m/github-push-action@master
+        with:
+          force: true
+          directory: "."
+          github_token: ${{ secrets.GITHUB_TOKEN }}
